@@ -1,14 +1,15 @@
 import React from "react";
 import './meme.css';
-// import memesData from "./memesData"
 
 
 export default function Meme() {
+   // creating state for individual meme
    const [meme, setMeme] = React.useState({
       topText: "",
       bottomText: "",
       randomImage: "http://i.imgflip.com/1bij.jpg"
    });
+   // creating state for memedata
    const [allMemeData, setAllMemeData] = React.useState([]);
    //API call for bringing data
    React.useEffect(() => {
@@ -16,6 +17,7 @@ export default function Meme() {
          .then(response => response.json())
          .then(data => setAllMemeData(data.data.memes))
    }, [])
+   //click event on the get meme button
    function getMemeImage() {
       setMeme(function (oldMeme) {
          let totalMemes = allMemeData.length;
@@ -27,6 +29,7 @@ export default function Meme() {
          };
       });
    }
+   // handel form inputs
    function handelChange(event) {
       const { name, value } = event.target;
       setMeme(function (oldFormData) {
