@@ -1,6 +1,6 @@
 import React from "react";
 import './meme.css';
-import memesData from "./memesData"
+// import memesData from "./memesData"
 
 
 export default function Meme() {
@@ -9,13 +9,18 @@ export default function Meme() {
       bottomText: "",
       randomImage: "http://i.imgflip.com/1bij.jpg"
    });
-   const [allMemeImages, setAllMemeImages] = React.useState(memesData);
-
+   const [allMemeData, setAllMemeData] = React.useState([]);
+   //API call for bringing data
+   React.useEffect(() => {
+      fetch("https://api.imgflip.com/get_memes")
+         .then(response => response.json())
+         .then(data => setAllMemeData(data.data.memes))
+   }, [])
    function getMemeImage() {
       setMeme(function (oldMeme) {
-         let totalMemes = allMemeImages.data.memes.length;
+         let totalMemes = allMemeData.length;
          let luckyNumber = Math.floor(Math.random() * totalMemes);
-         let memeImageUrl = allMemeImages.data.memes[luckyNumber].url;
+         let memeImageUrl = allMemeData[luckyNumber].url;
          return {
             ...oldMeme,
             randomImage: memeImageUrl
@@ -23,11 +28,11 @@ export default function Meme() {
       });
    }
    function handelChange(event) {
-     const {name, value} = event.target;
-      setMeme(function (oldFormData){
+      const { name, value } = event.target;
+      setMeme(function (oldFormData) {
          return {
             ...oldFormData,
-            [name]:value
+            [name]: value
          }
       });
    }
